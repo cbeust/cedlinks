@@ -1,6 +1,8 @@
 package com.beust.cedlinks
 
 import io.micronaut.runtime.Micronaut.*
+import io.quarkus.runtime.Quarkus
+import io.quarkus.runtime.QuarkusApplication
 
 fun initDb() {
     val dbUrl = Config.jdbcUrl
@@ -9,14 +11,24 @@ fun initDb() {
     DbMigration().execute()
 }
 
-
 fun main(args: Array<String>) {
-    initDb()
-    build()
-        .args(*args)
-        .packages("com.beust.cedlinks")
-        .start()
+    Quarkus.run(*args)
 }
+
+//class Main: QuarkusApplication {
+//    override fun run(vararg args: String?): Int {
+//        TODO("Not yet implemented")
+//    }
+//
+//}
+
+//fun main(args: Array<String>) {
+//    initDb()
+//    build()
+//        .args(*args)
+//        .packages("com.beust.cedlinks")
+//        .start()
+//}
 
 //fun main(args: Array<String>) {
 //    initDb()
