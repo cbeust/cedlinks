@@ -1,5 +1,6 @@
 buildscript {
     ext.dropWizardVersion = '2.0.0'
+    ext.quarkusVersion = "1.7.0.Final"
 
     repositories {
         mavenCentral()
@@ -20,6 +21,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "5.2.0"
     id "application"
     id "com.heroku.sdk.heroku-gradle" version "1.0.1"
+    id "io.quarkus" version "$quarkusVersion"
 }
 
 
@@ -46,9 +48,15 @@ repositories {
 
 dependencies {
 
-    kapt platform("io.micronaut:micronaut-bom:$micronautVersion"),
-        "io.micronaut:micronaut-inject-java",
-        "io.micronaut:micronaut-validation"
+    implementation enforcedPlatform("io.quarkus:quarkus-bom:$quarkusVersion"),
+            "io.quarkus:quarkus-kotlin",
+            "io.quarkus:quarkus-resteasy-jackson",
+            "io.quarkus:quarkus-hibernate-orm-panache-kotlin",
+            "io.quarkus:quarkus-jdbc-h2"
+
+//    kapt platform("io.micronaut:micronaut-bom:$micronautVersion"),
+//        "io.micronaut:micronaut-inject-java",
+//        "io.micronaut:micronaut-validation"
 
     implementation platform("io.micronaut:micronaut-bom:$micronautVersion"),
             "io.micronaut:micronaut-inject",
@@ -63,8 +71,8 @@ dependencies {
     runtimeOnly "ch.qos.logback:logback-classic",
             "com.fasterxml.jackson.module:jackson-module-kotlin"
 
-    kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion"),
-            "io.micronaut:micronaut-inject-java"
+//    kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion"),
+//            "io.micronaut:micronaut-inject-java"
 
     testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion"),
             "org.junit.jupiter:junit-jupiter-api",
@@ -97,6 +105,12 @@ dependencies {
 //    testImplementation 'org.spockframework:spock-core'
 
     testCompile "org.testng:testng:6.14.3"
+}
+
+allOpen {
+    annotation("javax.ws.rs.Path")
+    annotation("javax.enterprise.context.ApplicationScoped")
+    annotation("io.quarkus.test.junit.QuarkusTest")
 }
 
 test.classpath += configurations.developmentOnly
