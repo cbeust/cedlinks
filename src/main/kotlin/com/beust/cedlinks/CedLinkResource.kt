@@ -15,10 +15,11 @@ class CedLinkResource {
     lateinit var repository: CedLinkRepository
 
     @GET
-    @Path("/list")
+    @Path("list")
     @Transactional
-    fun list(@QueryParam("all") all: Boolean = false): List<LinkFromDb> {
-//        repository.persist(QLink("https://reddit.com"))
-        return repository.listLinks(all)
+    fun list(@QueryParam("all") all: Boolean = false,
+            @QueryParam("id") id: Long? = null): List<LinkFromDb>
+    {
+        return repository.listLinks(all, id)
     }
 }
