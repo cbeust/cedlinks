@@ -1,8 +1,6 @@
 package com.beust.cedlinks
 
-import io.micronaut.runtime.Micronaut.*
 import io.quarkus.runtime.Quarkus
-import io.quarkus.runtime.QuarkusApplication
 
 fun initDb() {
     val dbUrl = Config.jdbcUrl

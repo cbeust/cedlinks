@@ -1,5 +1,4 @@
 buildscript {
-    ext.dropWizardVersion = '2.0.0'
     ext.quarkusVersion = "1.7.0.Final"
 
     repositories {
@@ -16,14 +15,13 @@ buildscript {
 
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.3.72"
-    id "org.jetbrains.kotlin.kapt" version "1.3.72"
+//    id "org.jetbrains.kotlin.kapt" version "1.3.72"
     id "org.jetbrains.kotlin.plugin.allopen" version "1.3.72"
     id "com.github.johnrengelman.shadow" version "5.2.0"
     id "application"
     id "com.heroku.sdk.heroku-gradle" version "1.0.1"
     id "io.quarkus" version "$quarkusVersion"
 }
-
 
 configurations {
     // for dependencies that are needed for development only
@@ -52,33 +50,34 @@ dependencies {
             "io.quarkus:quarkus-kotlin",
             "io.quarkus:quarkus-resteasy-jackson",
             "io.quarkus:quarkus-hibernate-orm-panache-kotlin",
-            "io.quarkus:quarkus-jdbc-h2"
+            "io.quarkus:quarkus-jdbc-h2",
+            "io.quarkus:quarkus-jdbc-postgresql"
 
 //    kapt platform("io.micronaut:micronaut-bom:$micronautVersion"),
 //        "io.micronaut:micronaut-inject-java",
 //        "io.micronaut:micronaut-validation"
 
-    implementation platform("io.micronaut:micronaut-bom:$micronautVersion"),
-            "io.micronaut:micronaut-inject",
-            "io.micronaut:micronaut-validation",
+    implementation(
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}",
-            "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}",
-            "io.micronaut.kotlin:micronaut-kotlin-runtime",
-            "io.micronaut:micronaut-runtime",
-            "io.micronaut:micronaut-http-server-netty",
-            "io.micronaut:micronaut-http-client"
+            "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+//            "io.micronaut.kotlin:micronaut-kotlin-runtime",
+//            "io.micronaut:micronaut-runtime",
+//            "io.micronaut:micronaut-http-server-netty",
+//            "io.micronaut:micronaut-http-client"
+    )
 
-    runtimeOnly "ch.qos.logback:logback-classic",
-            "com.fasterxml.jackson.module:jackson-module-kotlin"
+    compile("ch.qos.logback:logback-classic:1.3.0-alpha5")
+//    ,
+//            "com.fasterxml.jackson.module:jackson-module-kotlin"
 
 //    kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion"),
 //            "io.micronaut:micronaut-inject-java"
 
-    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion"),
-            "org.junit.jupiter:junit-jupiter-api",
-            "io.micronaut.test:micronaut-test-junit5"
+//    testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion"),
+//            "org.junit.jupiter:junit-jupiter-api",
+//            "io.micronaut.test:micronaut-test-junit5"
 
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+//    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
     compile "com.github.spullara.mustache.java:compiler:0.9.6",
         "org.postgresql:postgresql:42.2.14.jre7",
@@ -104,7 +103,7 @@ dependencies {
 //    testImplementation 'io.dropwizard:dropwizard-test'
 //    testImplementation 'org.spockframework:spock-core'
 
-    testCompile "org.testng:testng:6.14.3"
+//    testCompile "org.testng:testng:6.14.3"
 }
 
 allOpen {
@@ -142,30 +141,30 @@ compileTestKotlin {
         javaParameters = true
     }
 }
-kapt {
-    arguments {
-        arg("micronaut.processing.incremental", true)
-        arg("micronaut.processing.annotations", "example.micronaut.*")
-        arg("micronaut.processing.group", "example.micronaut")
-        arg("micronaut.processing.module", "complete")
-    }
-}
+//kapt {
+//    arguments {
+//        arg("micronaut.processing.incremental", true)
+//        arg("micronaut.processing.annotations", "example.micronaut.*")
+//        arg("micronaut.processing.group", "example.micronaut")
+//        arg("micronaut.processing.module", "complete")
+//    }
+//}
 
 shadowJar {
     mergeServiceFiles()
 }
 
-tasks.withType(JavaExec) {
-    classpath += configurations.developmentOnly
-    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
-    if (gradle.startParameter.continuous) {
-        systemProperties(
-                'micronaut.io.watch.restart':'true',
-                'micronaut.io.watch.enabled':'true',
-                "micronaut.io.watch.paths":"src/main"
-        )
-    }
-}
+//tasks.withType(JavaExec) {
+//    classpath += configurations.developmentOnly
+//    jvmArgs('-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+//    if (gradle.startParameter.continuous) {
+//        systemProperties(
+//                'micronaut.io.watch.restart':'true',
+//                'micronaut.io.watch.enabled':'true',
+//                "micronaut.io.watch.paths":"src/main"
+//        )
+//    }
+//}
 
 
 //def demoPort = System.getenv("PORT") ?: 80
