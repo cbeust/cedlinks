@@ -2,6 +2,7 @@ package com.beust.cedlinks
 
 import javax.enterprise.inject.Default
 import javax.inject.Inject
+import javax.transaction.Transactional
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 
@@ -15,5 +16,9 @@ class CedLinkResource {
 
     @GET
     @Path("/list")
-    fun list(@QueryParam("all") all: Boolean = false) = repository.listLinks(all)
+    @Transactional
+    fun list(@QueryParam("all") all: Boolean = false): List<LinkFromDb> {
+//        repository.persist(QLink("https://reddit.com"))
+        return repository.listLinks(all)
+    }
 }
