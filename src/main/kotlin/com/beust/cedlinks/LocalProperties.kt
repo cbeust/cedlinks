@@ -1,5 +1,6 @@
 package com.beust.cedlinks
 
+import org.jboss.logging.Logger
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
@@ -8,10 +9,13 @@ import java.util.*
  * Encapsulate read access to local.properties.
  */
 class LocalProperties {
+    private val log = Logger.getLogger(LocalProperties::class.java)
+
     private val DIRS = listOf(Paths.get("."),
             Paths.get(System.getProperty("user.home"), ".settings"))
 
     private val localProperties: Properties by lazy {
+        log.warn("Warning here")
         val result = Properties()
         val lpPath = DIRS.map { Paths.get(it.toString(), "local.properties") }.firstOrNull { Files.exists(it) }
         if (lpPath != null) {
@@ -23,7 +27,7 @@ class LocalProperties {
                 }
             }
         } else {
-            println("Warning: couldn't find local.properties")
+            log.warn("Warning: couldn't find local.properties")
         }
 
         result
