@@ -1,11 +1,14 @@
 package com.beust.cedlinks
 
-import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntity
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import org.jboss.logging.Logger
 import javax.enterprise.context.ApplicationScoped
 import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
 import javax.transaction.Transactional
 
 @Entity(name = "links")
