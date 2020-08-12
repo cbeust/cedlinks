@@ -8,21 +8,28 @@ import java.util.*
  * Encapsulate read access to local.properties.
  */
 class LocalProperties {
+    private val DIRS = listOf(Paths.get("."),
+            Paths.get(System.getProperty("user.home"), ".settings"))
+
     private val localProperties: Properties by lazy {
         val result = Properties()
-        val filePath = Paths.get("local.properties")
-        filePath.let { path ->
-            if (path.toFile().exists()) {
-                Files.newInputStream(path).use {
-                    result.load(it)
+        val lpPath = DIRS.map { Paths.get(it.toString(), "local.properties") }.firstOrNull { Files.exists(it) }
+        if (lpPath != null) {
+            lpPath.let { path ->
+                if (path.toFile().exists()) {
+                    Files.newInputStream(path).use {
+                        result.load(it)
+                    }
                 }
             }
+        } else {
+            println("Warning: couldn't find local.properties")
         }
 
         result
     }
 
-    fun getNoThrows(name: String): String? = localProperties.getProperty(name)
+    private fun getNoThrows(name: String): String? = localProperties.getProperty(name)
 
     fun get(name: String) : String = getNoThrows(name)
                 ?: throw IllegalArgumentException("Couldn't find $name in local.properties")
