@@ -1,15 +1,18 @@
 package com.beust.cedlinks
 
+import org.jboss.resteasy.annotations.Form
+import java.net.URI
 import javax.enterprise.inject.Default
 import javax.inject.Inject
 import javax.transaction.Transactional
 import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
+import javax.ws.rs.core.Response
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-class CedLinkResource {
+class CedLinkResource: BaseController() {
     @Inject
     @field: Default
     lateinit var repository: CedLinkRepository
@@ -42,4 +45,32 @@ class CedLinkResource {
         ))
         return result
     }
+
+    class FormLink {
+        @FormParam("url")
+        lateinit var url: String
+        @FormParam("title")
+        lateinit var title: String
+        @FormParam("comment")
+        lateinit var comment: String
+        @FormParam("imageUrl")
+        var imageUrl: String? = null
+        @FormParam("time")
+        lateinit var time: String
+    }
+
+    @POST
+    @Path("insertLink")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
+    fun insertLink(@Form link: FormLink) =
+        timeRequest(link.time) {
+            repository.insertLink(link.url, link.title, link.comment, link.imageUrl)
+            Response.seeOther(URI(link.url))
+        }
+//
+//    @Get("preview")
+//    @Produces(MediaType.TEXT_HTML)
+//    fun publish(): String = dao.preview()
+
 }
