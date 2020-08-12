@@ -1,14 +1,20 @@
 package com.beust.cedlinks
 
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntity
+import io.quarkus.hibernate.orm.panache.kotlin.PanacheEntityBase
 import io.quarkus.hibernate.orm.panache.kotlin.PanacheRepository
 import javax.enterprise.context.ApplicationScoped
 import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
 import javax.persistence.Id
+import javax.transaction.Transactional
 
 @Entity(name = "links")
-class LinkFromDb {
+class LinkFromDb : PanacheEntityBase {
     @Id
-    var id: Long = 0
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    var id: Long? = 0
 
     lateinit var url: String
     lateinit var title: String
@@ -31,5 +37,15 @@ class CedLinkRepository: PanacheRepository<LinkFromDb> {
         } else {
             return find("published != null").list()
         }
+    }
+
+    @Transactional
+    fun insertLink(url: String, title: String, comment: String, imageUrl: String?) {
+        LinkFromDb().apply {
+            this.url = url
+            this.title = title
+            this.comment = comment
+            this.imageUrl = imageUrl
+        }.persist()
     }
 }
