@@ -16,8 +16,8 @@ class LinkFromDb : PanacheEntityBase {
     @Id
     @SequenceGenerator(
             name = "LinksSequence",
-            initialValue = 40,
-            sequenceName = "links_id_seq")
+            sequenceName = "links_id_seq",
+            allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LinksSequence")
     var id: Long? = 0
 
@@ -55,6 +55,5 @@ class CedLinkRepository: PanacheRepository<LinkFromDb> {
         }
         link.persist()
         log.info("Persisted $link id:${link.id}")
-        println("Link: " + link)
     }
 }
