@@ -10,12 +10,14 @@ import java.net.URI
 import javax.inject.Inject
 
 @Controller("/")
-class CedLinkController @Inject constructor(private val dao: Dao): BaseController() {
+class CedLinkController @Inject constructor(private val dao: Dao
+        ,private val dao2: Dao2
+): BaseController() {
     private val log = LoggerFactory.getLogger(CedLinkController::class.java)
 
-    @Get("list")
+    @Get("/list")
     @Produces
-    fun list(@QueryValue("all", defaultValue = "false") all: Boolean) = dao.listLinks(all)
+    fun list(@QueryValue("all", defaultValue = "false") all: Boolean) = dao2.listLinks(all)
 
     @Get("submit")
     @Produces(MediaType.TEXT_HTML)

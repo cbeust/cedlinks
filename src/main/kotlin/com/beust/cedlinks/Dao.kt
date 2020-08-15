@@ -7,6 +7,25 @@ import org.slf4j.LoggerFactory
 import java.net.URI
 import java.time.LocalDateTime
 import javax.inject.Singleton
+import kotlin.reflect.KClass
+
+@Singleton
+class Dao2 constructor(private val emp: EntityManagerProvider) {
+    private fun <T : Any> query(query: String, cls: KClass<T>): List<T> {
+        emp.get().createEntityManager().let { em ->
+            em.transaction.begin()
+            val result = em.createQuery(query, cls.java).resultList
+            em.transaction.commit()
+            em.close()
+            return result
+        }
+    }
+
+    fun listLinks(all: Boolean = false): List<HLink> {
+        return if (all) query("FROM HLink", HLink::class)
+            else query("FROM HLink WHERE published = null", HLink::class)
+    }
+}
 
 @Singleton
 class Dao {

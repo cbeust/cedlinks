@@ -54,14 +54,15 @@ dependencies {
             "org.jetbrains.exposed:exposed:0.12.1",
             "com.squareup.retrofit2:retrofit:2.9.0",
             "com.squareup.retrofit2:converter-gson:2.9.0",
-            "com.squareup.okhttp3:logging-interceptor:3.9.0"
+            "com.squareup.okhttp3:logging-interceptor:3.9.0",
+            "org.hibernate:hibernate-core:5.4.20.Final"
     ).forEach {
         implementation(it)
     }
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7")
 
-    testImplementation("org.testng:testng:7.0.3")
+    testImplementation("org.testng:testng:7.3.0")
 }
 
 allOpen {
