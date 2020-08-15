@@ -1,9 +1,7 @@
 package com.beust.cedlinks
 
-import io.micronaut.context.BeanContext
-import io.micronaut.runtime.Micronaut.build
+import io.micronaut.runtime.Micronaut
 import javax.persistence.*
-
 
 fun initDb() {
     val dbUrl = Config.jdbcUrl
@@ -14,38 +12,40 @@ fun initDb() {
 
 @Entity
 @Table(name = "links")
-class HLink {
-    @Id
-    @SequenceGenerator(
-            name = "LinksSequence",
-            sequenceName = "links_id_seq",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LinksSequence")
-    var id: Long? = 0
+class LinkFromDb(
+        @Id
+        @SequenceGenerator(
+                name = "LinksSequence",
+                sequenceName = "links_id_seq",
+                allocationSize = 1)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LinksSequence")
+        var id: Long? = 0,
 
-    @Column(name = "url")
-    lateinit var url: String
+        @Column(name = "url")
+        var url: String? = null,
 
-    @Column(name = "title")
-    lateinit var title: String
+        @Column(name = "title")
+        var title: String? = null,
 
-    @Column(name = "comment")
-    var comment: String? = null
+        @Column(name = "comment")
+        var comment: String? = null,
 
-    @Column(name = "imageUrl")
-    var imageUrl: String? = null
+        @Column(name = "imageUrl")
+        var imageUrl: String? = null,
 
-    @Column(name = "saved")
-    var saved: String? = null
+        @Column(name = "saved")
+        var saved: String? = null,
 
-    @Column(name = "published")
-    var published: String? = null
+        @Column(name = "published")
+        var published: String? = null) {
+
+    override fun toString() = "{LinkFromDb id: $id, url: $url, title: $title, comment: $comment"
 }
 
 fun main(args: Array<String>) {
 //    initHibernate()
     initDb()
-    build()
+    Micronaut.build()
         .args(*args)
         .packages("com.beust.cedlinks")
         .start()

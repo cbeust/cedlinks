@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import javax.inject.Inject
 
 @Controller("/podcasts")
-class PodcastController @Inject constructor(private val dao: Dao): BaseController() {
+class PodcastController @Inject constructor(private val dao: Dao2): BaseController() {
     private val log = LoggerFactory.getLogger(PodcastController::class.java)
 
     @Get("rss")

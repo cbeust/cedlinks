@@ -14,9 +14,15 @@
     </root>
 
     <logger name="io.micronaut.http" level="DEBUG"/>
-<!--
-    <logger name="io.micronaut.context.condition" level="DEBUG"/>
--->
+<!--    <logger name="log4j.logger.org.hibernate" level="INFO" />-->
+<!--    <logger name="log4j.logger.org.hibernate.SQL" level="debug" />-->
+<!--    <logger name="log4j.logger.org.hibernate.type.descriptor.sql" level="trace" />-->
+    <logger name="org.hibernate.SQL" level="DEBUG" />
+
+
+    <!--
+        <logger name="io.micronaut.context.condition" level="DEBUG"/>
+    -->
 <!--
     <root level="debug">
         <appender-ref ref="STDOUT" />

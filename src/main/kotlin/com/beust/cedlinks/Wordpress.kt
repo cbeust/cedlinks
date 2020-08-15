@@ -13,11 +13,10 @@ import retrofit2.http.POST
 import java.io.IOException
 import java.time.LocalDateTime
 
-open class Link(open val url: String, open val title: String, open val comment: String?, open val imageUrl: String?)
-
 class Wordpress {
     private val log = LoggerFactory.getLogger(Wordpress::class.java)
-    private val dao = Dao()
+
+    private lateinit var dao: Dao2
 
     class BasicAuthInterceptor(user: String?, password: String?) : Interceptor {
         private val credentials: String = Credentials.basic(user!!, password!!)
@@ -64,7 +63,7 @@ class Wordpress {
         log.info("ID: " + r.body()?.id)
     }
 
-    fun postNewArticle(links: List<Link>, draft: Boolean) {
+    fun postNewArticle(links: List<LinkFromDb>, draft: Boolean) {
         if (links.isNotEmpty()) {
             val date = Dates.formatShortDate(LocalDateTime.now())
             val title = "Interesting reads - $date"
