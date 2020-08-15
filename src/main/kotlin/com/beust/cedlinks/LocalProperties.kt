@@ -15,7 +15,6 @@ class LocalProperties {
             Paths.get(System.getProperty("user.home"), ".settings"))
 
     private val localProperties: Properties by lazy {
-        log.warn("Warning here")
         val result = Properties()
         val lpPath = DIRS.map { Paths.get(it.toString(), "local.properties") }.firstOrNull { Files.exists(it) }
         if (lpPath != null) {
